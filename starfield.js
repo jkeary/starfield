@@ -1,21 +1,22 @@
 console.log("Let's get to work!");
 
 const star = document.querySelector('.star');
-console.log(star);
 
 let xCoordinate = 50;
 let yCoordinate = 50;
 
 console.log('here');
 let counter = 1;
-setInterval(() => {
+const moveStarInterval = setInterval(() => {
     if (counter = 8) {
-        console.log('here');
         star.style.left = `${--xCoordinate}%`;
         star.style.top = `${++yCoordinate}%`;
         counter = 1;
 
         // break out of this once your hitting 100 or 0
+        if (xCoordinate < 0 || yCoordinate > 100) {
+            clearInterval(moveStarInterval)
+        } 
     }
     ++counter;
 }, 500);
