@@ -2,24 +2,33 @@ console.log("Let's get to work!");
 
 const star = document.querySelector('.star');
 
-let xCoordinate = 50;
-let yCoordinate = 50;
+star.addEventListener("load", addMovement()); 
 
-console.log('here');
-let counter = 1;
-const moveStarInterval = setInterval(() => {
-    if (counter = 8) {
-        star.style.left = `${--xCoordinate}%`;
-        star.style.top = `${++yCoordinate}%`;
-        counter = 1;
+function addMovement() {
+    console.log(star);
+    star.classList.add("star-move");
+}
 
-        // break out of this once your hitting 100 or 0
-        if (xCoordinate < 0 || yCoordinate > 100) {
-            clearInterval(moveStarInterval)
-        } 
-    }
-    ++counter;
-}, 500);
+// let xCoordinate = 50;
+// let yCoordinate = 50;
+
+// let counter = 0;
+// const moveStarInterval = setInterval(() => {
+//     console.log(counter)
+//     if (counter === 2) {
+//         star.style.left = `${--xCoordinate}%`;
+//         star.style.top = `${++yCoordinate}%`;
+//         star.style.transform = `${translate3d()}`;
+//         counter = 0;
+
+//         // break out of this once your hitting 100 or 0
+//         if (xCoordinate < 0 || yCoordinate > 100) {
+//             clearInterval(moveStarInterval)
+//         } 
+//     }
+//     counter++;
+// }, 500);
+
 
 // create a random array that has a bunch of start coordinates
 
