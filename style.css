@@ -14,5 +14,5 @@ body {
 .star { 
     box-shadow: 0 0 1.5px 1.5px white;
     display: inline-block;
-    opacity: 0.1;
+    opacity: 0;
 }
