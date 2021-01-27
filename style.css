@@ -1,18 +1,21 @@
 body {
     background: black;
     position: relative;
-    height: 120vh;
+    height: 100vh;
 }
 
-.star-center {
+.star {
     margin: 0;
     height: 5px;
     width: 5px;
     border-radius: 5px;
-    box-shadow: 0 0 1px 1px #555;
+    box-shadow: 0 0 1.5px 1.5px #555;
     background-color: white;
+}
+
+.star-center {
     transform: translate3d(50vw, 50vh, 5px);
-    transition: transform 5s linear;
+    transition: transform 7s linear;
 }
 
 .star-move { 

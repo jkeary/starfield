@@ -1,37 +1,33 @@
 console.log("Let's get to work!");
 
-const star = document.querySelector('.star');
+// const star = document.querySelector('.star');
 
-star.addEventListener("load", addMovement()); 
+// star.addEventListener("load", addMovement()); 
 
-function addMovement() {
-    console.log(star);
-    star.classList.add("star-move");
+// function addMovement() {
+//     star.classList.add("star-move");
+// }
+
+// creating a star field
+// each start needs a starting x, starting y, ending x and ending y.
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
 }
+  
+let starCount = 0;
+let initStarField = []
+while (starCount < 50) {
+    initStarField.push({x: getRandomInt(0, 100), y: getRandomInt(0, 100)});
+    ++starCount;
+} 
 
-// let xCoordinate = 50;
-// let yCoordinate = 50;
+initStarField.map(star => {
+    star.html = `<div class="star" style="transform: translate3d(${star.x}vw, ${star.y}vh, 5px);></div>`
+})
 
-// let counter = 0;
-// const moveStarInterval = setInterval(() => {
-//     console.log(counter)
-//     if (counter === 2) {
-//         star.style.left = `${--xCoordinate}%`;
-//         star.style.top = `${++yCoordinate}%`;
-//         star.style.transform = `${translate3d()}`;
-//         counter = 0;
-
-//         // break out of this once your hitting 100 or 0
-//         if (xCoordinate < 0 || yCoordinate > 100) {
-//             clearInterval(moveStarInterval)
-//         } 
-//     }
-//     counter++;
-// }, 500);
-
-
-// create a random array that has a bunch of start coordinates
-
+console.log(initStarField);
 // add those to the dom on start
 
 // then move the stars outward
