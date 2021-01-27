@@ -25,7 +25,6 @@ while (starCount < 1000) {
     let startZ = getRandomInt(0, 100);
     let finishX;
     let finishY;
-    let finishZ = 1;
     let quadrant;
     // move up and right
     if (startX > 50 && startY <= 50) {
@@ -75,11 +74,9 @@ while (starCount < 1000) {
             finishY = getRandomInt(startY, 100); // down is rand
             finishX = -10; // left is min
         }
-        
-        
     }
 
-    initStarField.push({startX, startY, startZ, finishX, finishY, finishZ, quadrant});
+    initStarField.push({startX, startY, startZ, finishX, finishY, quadrant});
     ++starCount;
 } 
 
@@ -87,7 +84,7 @@ console.log(initStarField);
 
 // add those to the dom on start
 initStarField.forEach((star, i) => {
-    starFieldEl.insertAdjacentHTML('afterbegin', `<div class="star star-${i}" style="transform: translate3d(${star.startX}vw, ${star.startY}vh, 5px)"></div>`);
+    starFieldEl.insertAdjacentHTML('afterbegin', `<div class="star star-${i}" style="transform: perspective(${star.startZ}px) translate3d(${star.startX}vw, ${star.startY}vh, 5px)"></div>`);
 });
 
 // then move the stars outward
@@ -95,6 +92,6 @@ initStarField.forEach((star, i) => {
 window.addEventListener('load', () => {
     initStarField.forEach((star, i) => {
         const starEl = document.querySelector(`.star-${i}`);
-        starEl.style.transform = `translate3d(${star.finishX}vw, ${star.finishY}vh, 5px)`;
+        starEl.style.transform = `perspective(${star.startZ}px) translate3d(${star.finishX}vw, ${star.finishY}vh, 5px)`;
     })
 });
