@@ -1,7 +1,8 @@
 console.log("Let's get to work!");
 
 // const star = document.querySelector('.star');
-
+const starField = document.querySelector('.star-field');
+console.log(starField)
 // star.addEventListener("load", addMovement()); 
 
 // function addMovement() {
@@ -18,17 +19,17 @@ function getRandomInt(min, max) {
   
 let starCount = 0;
 let initStarField = []
-while (starCount < 50) {
+while (starCount < 1000) {
     initStarField.push({x: getRandomInt(0, 100), y: getRandomInt(0, 100)});
     ++starCount;
 } 
 
-initStarField.map(star => {
-    star.html = `<div class="star" style="transform: translate3d(${star.x}vw, ${star.y}vh, 5px);></div>`
-})
-
-console.log(initStarField);
 // add those to the dom on start
+initStarField.forEach(star => {
+    console.log(starField);
+    starField.insertAdjacentHTML('afterbegin', `<div class="star" style="transform: translate3d(${star.x}vw, ${star.y}vh, 5px)"></div>`);
+});
+
 
 // then move the stars outward
 
