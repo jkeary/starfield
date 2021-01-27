@@ -17,11 +17,12 @@ body {
     box-shadow: 0 0 1.5px 1.5px #555;
     background-color: white;
     display: inline-block;
+    transition: transform 7s linear;
 }
 
 .star-center {
     transform: translate3d(50vw, 50vh, 5px);
-    transition: transform 7s linear;
+    
 }
 
 .star-move { 
