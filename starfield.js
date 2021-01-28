@@ -111,6 +111,6 @@ setInterval(() => {
         };
     });
     ++starCount;
-}, 1);
+}, .01);
 
 // class-ify the code, its starting to look a little rough
