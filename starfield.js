@@ -83,7 +83,6 @@ function makeStar() {
     add star to dom with an id.  This function happens asyncrhonously as it deals with the rendering engine, so it returns a promise of the rendering
 */
 function renderStar(star, id) {
-    console.log(`rendering star ${id}`);
     return new Promise((resolve, reject) => {
         starFieldEl.insertAdjacentHTML('afterbegin', `<div id="star-${id}" class="star" style="transition: all ${getRandomInt(0, 7)}s linear; transform: translate3d(${star.startX}vw, ${star.startY}vh, 5px) scale(${star.scaleStart})"></div>`);
         resolve({ id, starObj: star, starEl: document.querySelector(`#star-${id}`) });
@@ -94,9 +93,17 @@ function renderStar(star, id) {
     move star around the dom based on its finish coords
 */
 function moveStar(star, id, el) {
+    console.log(`starting moving ${id}`)
     const starEl = el || document.querySelector(`#star-${id}`);
     starEl.style.transform = `translate3d(${star.finishX}vw, ${star.finishY}vh, 5px) scale(${star.scaleFinish})`;
     starEl.style.opacity = 1;
+}
+
+/*
+    collects and destrys "dead" stars.  Stars that have already finished their animations.  This will help prevent the dom from overloading
+*/
+function destroyStar(starEl) {
+    starFieldEl.removeChild(starEl);
 }
 
 let starCount = 0;
@@ -107,7 +114,16 @@ setInterval(() => {
         let { id, starObj, starEl } = results;
         if (starEl) {
             // Throw the move in a setTimeout so that it fully reaches next render cycle.  Fixes issue where original transition styles were just being overwritter and not actually transitioning/moving the star.
-            setTimeout(() => {moveStar(starObj, id, starEl)});
+            setTimeout(() => {
+                moveStar(starObj, id, starEl);
+                starEl.addEventListener('transitionend', (e) => { 
+                    // Make sure you destroy star once the transform's transition has completed (not opacity, opacity seems to be happening faster).
+                    if (e.propertyName === 'transform') {
+                        destroyStar(starEl);
+                    }
+                });
+            });
+            
         };
     });
     ++starCount;
