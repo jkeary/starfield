@@ -2,21 +2,18 @@ console.log("Let's get to work!");
 
 const starFieldEl = document.querySelector('.star-field');
 
-// creating a star field object
-/*
- Star Object
-   coords: start x, start y, finish x, finish y,
-*/
-
+// math helper function that gives back a random int between a max and a min.   Has many use cases.
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
 }
-  
-let starCount = 0;
-let initStarField = []
-while (starCount < 1000) {
+
+/*
+ Star Object
+   coords: start x, start y, finish x, finish y,
+*/
+function makeStar() {
     // y coordinate starts in top left at 0 and moving down is positive (a little confusing)
     // x coordinate starts top left as well and moves right for positive which follows general cartesian coordinates.
     // z coordinates the higher the number the further away it appears.  The numbers should always shrink so they seem like theyre coming at us.
@@ -79,24 +76,45 @@ while (starCount < 1000) {
         }
     }
 
-    initStarField.push({startX, startY, finishX, finishY, scaleStart, scaleFinish, quadrant});
+    return {startX, startY, finishX, finishY, scaleStart, scaleFinish, quadrant};
+}
+  
+/*
+    add star to dom with an id
+*/
+function renderStar(star, id) {
+    starFieldEl.insertAdjacentHTML('afterbegin', `<div class="star star-${id}" style="transition: all ${getRandomInt(0, 7)}s ease; transform: translate3d(${star.startX}vw, ${star.startY}vh, 5px) scale(${star.scaleStart})"></div>`);
+}
+
+/*
+    move star around the dom based on its finish coords
+*/
+function moveStar(star, id) {
+    const starEl = document.querySelector(`.star-${id}`);
+    starEl.style.transform = `translate3d(${star.finishX}vw, ${star.finishY}vh, 5px) scale(${star.scaleFinish})`;
+    starEl.style.opacity = 1;
+}
+
+// create initial star field
+let starCount = 0;
+let initStarField = []
+while (starCount < 1000) {
+    let newStar = makeStar();
+    initStarField.push(newStar);
+    // add those to the dom on start
+    renderStar(newStar, starCount);
     ++starCount;
-} 
-
-console.log(initStarField);
-
-// add those to the dom on start
-const speed = ['slow', 'medium', 'fast'];
-initStarField.forEach((star, i) => {
-    starFieldEl.insertAdjacentHTML('afterbegin', `<div class="star star-${i}" style="transition: all ${getRandomInt(0, 7)}s linear; transform: translate3d(${star.startX}vw, ${star.startY}vh, 5px) scale(${star.scaleStart})"></div>`);
-});
+}
 
 // then move the stars outward
 // based on the x y coordinates, first determine which quadrant the star is in.
 window.addEventListener('load', () => {
-    initStarField.forEach((star, i) => {
-        const starEl = document.querySelector(`.star-${i}`);
-        starEl.style.transform = `translate3d(${star.finishX}vw, ${star.finishY}vh, 5px) scale(${star.scaleFinish})`;
-        starEl.style.opacity = 1;
-    })
+    initStarField.forEach((star, i) => moveStar(star, i));
 });
+
+// next steps, add more stars originating around the center, make a never ending loop
+setInterval(() => {
+    console.log('add more stars');
+}, 500);
+
+// class-ify the code, its starting to look a little rough
