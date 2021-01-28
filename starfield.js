@@ -115,21 +115,20 @@ window.addEventListener('load', () => {
     initStarField.forEach((star, i) => moveStar(star, i));
 });
 
-// next steps, add more stars originating around the center, make a never ending loop
+// next steps, add more stars originating around the center, make a never ending loop.  THIS KILLS YOUR BROWSER!
 let newStarCount = 1000;
-setTimeout(() => {
+setInterval(() => {
     let newStarObj = makeStar();
     console.log(newStarObj);
     renderStar(newStarObj, newStarCount).then(results => {
         let { id, starObj, starEl } = results;
         console.log(starEl);
         if (starEl) {
-            console.log('star loaded, lets move it');
-            console.log(starEl.style.transform);
-            moveStar(starObj, id, starEl)
+            // Throw the move in a setTimeout so that it fully reaches next render cycle.  Fixes issue where original transition styles were just being overwritter and not actually transitioning/moving the star.
+            setTimeout(() => {moveStar(starObj, id, starEl)});
         };
     });
     ++newStarCount;
-}, 5000);
+}, 1);
 
 // class-ify the code, its starting to look a little rough
