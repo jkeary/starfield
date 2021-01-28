@@ -80,17 +80,21 @@ function makeStar() {
 }
   
 /*
-    add star to dom with an id.  This function happens asyncrhonously as it deals with the rendering engine.
+    add star to dom with an id.  This function happens asyncrhonously as it deals with the rendering engine, so it returns a promise of the rendering
 */
 function renderStar(star, id) {
-    starFieldEl.insertAdjacentHTML('afterbegin', `<div class="star star-${id}" style="transition: all ${getRandomInt(0, 7)}s ease; transform: translate3d(${star.startX}vw, ${star.startY}vh, 5px) scale(${star.scaleStart})"></div>`);
+    console.log(`rendering star ${id}`);
+    return new Promise((resolve, reject) => {
+        starFieldEl.insertAdjacentHTML('afterbegin', `<div id="star-${id}" class="star" style="transition: all ${getRandomInt(0, 7)}s linear; transform: translate3d(${star.startX}vw, ${star.startY}vh, 5px) scale(${star.scaleStart})"></div>`);
+        resolve({ id, starObj: star, starEl: document.querySelector(`#star-${id}`) });
+    });
 }
 
 /*
     move star around the dom based on its finish coords
 */
-function moveStar(star, id) {
-    const starEl = document.querySelector(`.star-${id}`);
+function moveStar(star, id, el) {
+    const starEl = el || document.querySelector(`#star-${id}`);
     starEl.style.transform = `translate3d(${star.finishX}vw, ${star.finishY}vh, 5px) scale(${star.scaleFinish})`;
     starEl.style.opacity = 1;
 }
@@ -107,22 +111,25 @@ while (starCount < 1000) {
 }
 
 // then move the stars outward
-// based on the x y coordinates, first determine which quadrant the star is in.
 window.addEventListener('load', () => {
     initStarField.forEach((star, i) => moveStar(star, i));
 });
 
 // next steps, add more stars originating around the center, make a never ending loop
 let newStarCount = 1000;
-setInterval(() => {
-    console.log('add more stars');
-    let newStar = makeStar();
-    renderStar(newStar, newStarCount);
+setTimeout(() => {
+    let newStarObj = makeStar();
+    console.log(newStarObj);
+    renderStar(newStarObj, newStarCount).then(results => {
+        let { id, starObj, starEl } = results;
+        console.log(starEl);
+        if (starEl) {
+            console.log('star loaded, lets move it');
+            console.log(starEl.style.transform);
+            moveStar(starObj, id, starEl)
+        };
+    });
     ++newStarCount;
-    // const starEl = document.querySelector(`.star-${newStarCount}`);
-    // starEl.addEventListener('load', () => {
-    //     moveStar(newStar, newStarCount)
-    // });
-}, 500);
+}, 5000);
 
 // class-ify the code, its starting to look a little rough
