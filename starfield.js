@@ -80,7 +80,7 @@ function makeStar() {
 }
   
 /*
-    add star to dom with an id
+    add star to dom with an id.  This function happens asyncrhonously as it deals with the rendering engine.
 */
 function renderStar(star, id) {
     starFieldEl.insertAdjacentHTML('afterbegin', `<div class="star star-${id}" style="transition: all ${getRandomInt(0, 7)}s ease; transform: translate3d(${star.startX}vw, ${star.startY}vh, 5px) scale(${star.scaleStart})"></div>`);
@@ -113,8 +113,16 @@ window.addEventListener('load', () => {
 });
 
 // next steps, add more stars originating around the center, make a never ending loop
+let newStarCount = 1000;
 setInterval(() => {
     console.log('add more stars');
+    let newStar = makeStar();
+    renderStar(newStar, newStarCount);
+    ++newStarCount;
+    // const starEl = document.querySelector(`.star-${newStarCount}`);
+    // starEl.addEventListener('load', () => {
+    //     moveStar(newStar, newStarCount)
+    // });
 }, 500);
 
 // class-ify the code, its starting to look a little rough
